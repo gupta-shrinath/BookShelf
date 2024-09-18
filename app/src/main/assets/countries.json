@@ -1,0 +1,402 @@
+[
+  {
+    "country": "Mali",
+    "region": "Africa"
+  },
+  {
+    "country": "Gambia (the)",
+    "region": "Africa"
+  },
+  {
+    "country": "Côte d'Ivoire",
+    "region": "Africa"
+  },
+  {
+    "country": "Taiwan (Province of China)",
+    "region": "Asia"
+  },
+  {
+    "country": "Kyrgyzstan",
+    "region": "Asia"
+  },
+  {
+    "country": "Togo",
+    "region": "Africa"
+  },
+  {
+    "country": "Kenya",
+    "region": "Africa"
+  },
+  {
+    "country": "Seychelles",
+    "region": "Africa"
+  },
+  {
+    "country": "Brunei Darussalam",
+    "region": "Asia"
+  },
+  {
+    "country": "Hong Kong",
+    "region": "Asia"
+  },
+  {
+    "country": "Cabo Verde",
+    "region": "Africa"
+  },
+  {
+    "country": "Liberia",
+    "region": "Africa"
+  },
+  {
+    "country": "Mongolia",
+    "region": "Asia"
+  },
+  {
+    "country": "Thailand",
+    "region": "Asia"
+  },
+  {
+    "country": "Mauritius",
+    "region": "Africa"
+  },
+  {
+    "country": "Antarctica",
+    "region": "Antarctic"
+  },
+  {
+    "country": "Singapore",
+    "region": "Asia"
+  },
+  {
+    "country": "Sierra Leone",
+    "region": "Africa"
+  },
+  {
+    "country": "Gabon",
+    "region": "Africa"
+  },
+  {
+    "country": "Nepal",
+    "region": "Asia"
+  },
+  {
+    "country": "Pakistan",
+    "region": "Asia"
+  },
+  {
+    "country": "Malawi",
+    "region": "Africa"
+  },
+  {
+    "country": "Myanmar",
+    "region": "Asia"
+  },
+  {
+    "country": "Guinea",
+    "region": "Africa"
+  },
+  {
+    "country": "Maldives",
+    "region": "Asia"
+  },
+  {
+    "country": "Eswatini",
+    "region": "Africa"
+  },
+  {
+    "country": "Chad",
+    "region": "Africa"
+  },
+  {
+    "country": "Bangladesh",
+    "region": "Asia"
+  },
+  {
+    "country": "Namibia",
+    "region": "Africa"
+  },
+  {
+    "country": "Mauritania",
+    "region": "Africa"
+  },
+  {
+    "country": "Somalia",
+    "region": "Africa"
+  },
+  {
+    "country": "Timor-Leste",
+    "region": "Asia"
+  },
+  {
+    "country": "Uzbekistan",
+    "region": "Asia"
+  },
+  {
+    "country": "Sri Lanka",
+    "region": "Asia"
+  },
+  {
+    "country": "South Africa",
+    "region": "Africa"
+  },
+  {
+    "country": "Georgia",
+    "region": "Asia"
+  },
+  {
+    "country": "Lao People's Democratic Republic (the)",
+    "region": "Asia"
+  },
+  {
+    "country": "Botswana",
+    "region": "Africa"
+  },
+  {
+    "country": "Congo (the)",
+    "region": "Africa"
+  },
+  {
+    "country": "Egypt",
+    "region": "Africa"
+  },
+  {
+    "country": "Turkmenistan",
+    "region": "Asia"
+  },
+  {
+    "country": "Zambia",
+    "region": "Africa"
+  },
+  {
+    "country": "Mayotte",
+    "region": "Africa"
+  },
+  {
+    "country": "Korea (the Republic of)",
+    "region": "Asia"
+  },
+  {
+    "country": "Rwanda",
+    "region": "Africa"
+  },
+  {
+    "country": "Cameroon",
+    "region": "Africa"
+  },
+  {
+    "country": "Djibouti",
+    "region": "Africa"
+  },
+  {
+    "country": "Tajikistan",
+    "region": "Asia"
+  },
+  {
+    "country": "India",
+    "region": "Asia"
+  },
+  {
+    "country": "Belize",
+    "region": "Central America"
+  },
+  {
+    "country": "Ghana",
+    "region": "Africa"
+  },
+  {
+    "country": "Uganda",
+    "region": "Africa"
+  },
+  {
+    "country": "Madagascar",
+    "region": "Africa"
+  },
+  {
+    "country": "Indonesia",
+    "region": "Asia"
+  },
+  {
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "country": "Morocco",
+    "region": "Africa"
+  },
+  {
+    "country": "Korea (the Democratic People's Republic of)",
+    "region": "Asia"
+  },
+  {
+    "country": "Afghanistan",
+    "region": "Asia"
+  },
+  {
+    "country": "Angola",
+    "region": "Africa"
+  },
+  {
+    "country": "Equatorial Guinea",
+    "region": "Africa"
+  },
+  {
+    "country": "Heard Island and McDonald Islands",
+    "region": "Antarctic"
+  },
+  {
+    "country": "Guinea-Bissau",
+    "region": "Africa"
+  },
+  {
+    "country": "Armenia",
+    "region": "Asia"
+  },
+  {
+    "country": "Viet Nam",
+    "region": "Asia"
+  },
+  {
+    "country": "British Indian Ocean Territory (the)",
+    "region": "Asia"
+  },
+  {
+    "country": "Senegal",
+    "region": "Africa"
+  },
+  {
+    "country": "Zimbabwe",
+    "region": "Africa"
+  },
+  {
+    "country": "Malaysia",
+    "region": "Asia"
+  },
+  {
+    "country": "Congo (the Democratic Republic of the)",
+    "region": "Africa"
+  },
+  {
+    "country": "Bhutan",
+    "region": "Asia"
+  },
+  {
+    "country": "Mozambique",
+    "region": "Africa"
+  },
+  {
+    "country": "Azerbaijan",
+    "region": "Asia"
+  },
+  {
+    "country": "Burkina Faso",
+    "region": "Africa"
+  },
+  {
+    "country": "South Sudan",
+    "region": "Africa"
+  },
+  {
+    "country": "South Georgia and the South Sandwich Islands",
+    "region": "Antarctic"
+  },
+  {
+    "country": "Philippines (the)",
+    "region": "Asia"
+  },
+  {
+    "country": "Macao",
+    "region": "Asia"
+  },
+  {
+    "country": "Central African Republic (the)",
+    "region": "Africa"
+  },
+  {
+    "country": "Réunion",
+    "region": "Africa"
+  },
+  {
+    "country": "Sao Tome and Principe",
+    "region": "Africa"
+  },
+  {
+    "country": "Eritrea",
+    "region": "Africa"
+  },
+  {
+    "country": "Burundi",
+    "region": "Africa"
+  },
+  {
+    "country": "Tunisia",
+    "region": "Africa"
+  },
+  {
+    "country": "Tanzania, the United Republic of",
+    "region": "Africa"
+  },
+  {
+    "country": "French Southern Territories (the)",
+    "region": "Antarctic"
+  },
+  {
+    "country": "Comoros (the)",
+    "region": "Africa"
+  },
+  {
+    "country": "Nigeria",
+    "region": "Africa"
+  },
+  {
+    "country": "Sudan (the)",
+    "region": "Africa"
+  },
+  {
+    "country": "Ethiopia",
+    "region": "Africa"
+  },
+  {
+    "country": "Benin",
+    "region": "Africa"
+  },
+  {
+    "country": "Saint Helena, Ascension and Tristan da Cunha",
+    "region": "Africa"
+  },
+  {
+    "country": "Cambodia",
+    "region": "Asia"
+  },
+  {
+    "country": "Lesotho",
+    "region": "Africa"
+  },
+  {
+    "country": "Western Sahara*",
+    "region": "Africa"
+  },
+  {
+    "country": "Libya",
+    "region": "Africa"
+  },
+  {
+    "country": "Niger (the)",
+    "region": "Africa"
+  },
+  {
+    "country": "Algeria",
+    "region": "Africa"
+  },
+  {
+    "country": "Bouvet Island",
+    "region": "Antarctic"
+  },
+  {
+    "country": "Kazakhstan",
+    "region": "Asia"
+  },
+  {
+    "country": "Japan",
+    "region": "Asia"
+  }
+]
