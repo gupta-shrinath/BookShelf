@@ -3,13 +3,13 @@ package com.droid.bookshelf.data.models
 import com.squareup.moshi.Json
 
 data class LocationInfo(
-    @Json(name = "status") val status: String,
-    @Json(name = "country") val country: String,
-    @Json(name = "countryCode") val countryCode: String,
-    @Json(name = "region") val region: String,
-    @Json(name = "regionName") val regionName: String,
-    @Json(name = "city") val city: String,
-    @Json(name = "zip") val zip: String,
+    val status: String,
+    val country: String,
+    val countryCode: String,
+    val region: String,
+    val regionName: String,
+    val city: String,
+    val zip: String,
     @Json(name = "lat") val latitude: Double,
     @Json(name = "lon") val longitude: Double,
     @Json(name = "timezone") val timezone: String,

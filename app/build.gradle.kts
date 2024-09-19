@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -71,5 +72,7 @@ dependencies {
     implementation(libs.http.logger)
     implementation(libs.retrofit.moshi)
     implementation(libs.coil)
+    implementation(libs.navigation.compose)
+    implementation(libs.kotlinx.serialization.json)
 
 }

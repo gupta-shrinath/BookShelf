@@ -14,14 +14,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -52,7 +55,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.forEach
 
 @Composable
-fun SignUpScreen(countriesFlow: Flow<Async<List<String>>>) {
+fun SignUpScreen(countriesFlow: Flow<Async<List<String>>>, goToNextScreen: () -> Unit) {
 
     val countriesListState by countriesFlow.collectAsState(initial = Async.Loading)
 
@@ -62,7 +65,22 @@ fun SignUpScreen(countriesFlow: Flow<Async<List<String>>>) {
         }
 
         is Async.Loading -> {
-            Text(text = "Loading countries")
+            Box(modifier = Modifier.fillMaxSize()) {
+                Column(
+                    modifier = Modifier.align(Alignment.Center),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(64.dp),
+                        color = MaterialTheme.colorScheme.secondary,
+                        trackColor = MaterialTheme.colorScheme.surfaceVariant,
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Text(text = "Loading countries")
+                }
+            }
         }
 
         is Async.Success -> {
@@ -72,7 +90,6 @@ fun SignUpScreen(countriesFlow: Flow<Async<List<String>>>) {
             var selectedCountry by remember { mutableStateOf(countries.firstOrNull() ?: "") }
             var passwordVisible by remember { mutableStateOf(false) }
             var expanded by remember { mutableStateOf(false) }
-
             val interactionSource = remember {
                 object : MutableInteractionSource {
                     override val interactions = MutableSharedFlow<Interaction>(
@@ -107,9 +124,10 @@ fun SignUpScreen(countriesFlow: Flow<Async<List<String>>>) {
                     value = email,
                     isError = isSignupClicked && email.isValidEmail().not(),
                     supportingText = {
-                        if(isSignupClicked && email.isValidEmail().not()) {
+                        if (isSignupClicked && email.isValidEmail().not()) {
                             Text(text = "Invalid Email")
-                        }},
+                        }
+                    },
                     onValueChange = { email = it },
                     label = { Text("Email") },
                     modifier = Modifier.fillMaxWidth(),
@@ -126,13 +144,15 @@ fun SignUpScreen(countriesFlow: Flow<Async<List<String>>>) {
                     value = password,
                     isError = isSignupClicked && password.isValidPassword().not(),
                     supportingText = {
-                        if(isSignupClicked && password.isValidPassword().not()) {
-                            Text(text = """
+                        if (isSignupClicked && password.isValidPassword().not()) {
+                            Text(
+                                text = """
                                 Password requirements: Minimum of 8 characters, including at least one number, one
                                 special character -> !@#${'$'}%^&*(), one lowercase letter, and one uppercase letter.
-                            """.trimIndent())
+                            """.trimIndent()
+                            )
                         }
-                       },
+                    },
                     onValueChange = { password = it },
                     label = { Text("Password") },
                     modifier = Modifier.fillMaxWidth(),
@@ -151,13 +171,14 @@ fun SignUpScreen(countriesFlow: Flow<Async<List<String>>>) {
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                Box(modifier = Modifier
-                    .fillMaxWidth()
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
                 ) {
                     OutlinedTextField(
                         value = selectedCountry,
                         onValueChange = { selectedCountry = it },
-                        interactionSource  = interactionSource,
+                        interactionSource = interactionSource,
                         label = { Text("Select Country") },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -192,11 +213,12 @@ fun SignUpScreen(countriesFlow: Flow<Async<List<String>>>) {
                 Button(
                     onClick = {
                         isSignupClicked = true
-                       if(email.isValidEmail().not()) {
-                        return@Button
-                       } else if(password.isValidPassword().not()) {
-                           return@Button
-                       }
+                        if (email.isValidEmail().not()) {
+                            return@Button
+                        } else if (password.isValidPassword().not()) {
+                            return@Button
+                        }
+                        goToNextScreen()
                         // Validate
                     },
                     modifier = Modifier.fillMaxWidth()
@@ -216,5 +238,6 @@ fun SignUpScreenPreview() {
         SignUpScreen(flow {
             emit(Async.Success(listOf("India", "US")))
         })
+        {}
     }
 }

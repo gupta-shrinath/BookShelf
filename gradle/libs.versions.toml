@@ -13,6 +13,8 @@ retrofit = "2.11.0"
 http-logger = "4.12.0"
 retrofit-moshi = "2.11.0"
 coil = "2.6.0"
+composeNavigation = "2.8.1"
+serialization = "1.6.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -34,8 +36,11 @@ retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = 
 http-logger = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "http-logger" }
 retrofit-moshi = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofit-moshi" }
 coil = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "composeNavigation" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 
