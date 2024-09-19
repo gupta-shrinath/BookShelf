@@ -19,4 +19,10 @@ interface BookShelfRepository {
     suspend fun saveUserId(userId: String)
 
     suspend fun getUserId(): String
+
+    suspend fun getUserLike(bookId: String):Boolean
+
+    suspend fun likeBook(bookId: String)
+
+    suspend fun unLikeBook(bookId: String)
 }

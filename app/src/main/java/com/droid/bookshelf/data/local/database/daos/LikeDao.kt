@@ -14,4 +14,7 @@ interface LikeDao {
     @Query("SELECT * FROM likes WHERE bookId = :bookId AND userId = :userId")
     suspend fun getUserLikeForBook(bookId: String, userId: String): Like?
 
+    @Query("DELETE FROM likes WHERE bookId = :bookId AND userId = :userId")
+    suspend fun deleteLikeForBook(bookId: String, userId: String)
+
 }

@@ -99,4 +99,12 @@ class BookShelfLocalDataSource {
             }
         }
 
+        suspend fun deleteLikeForBook(bookId:String, userId:String) {
+            try {
+                 database.likeDao().deleteLikeForBook(bookId,userId)
+            } catch (e:Exception) {
+                Log.e(TAG, "deleteLikeForBook failed")
+            }
+        }
+
 }

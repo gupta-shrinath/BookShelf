@@ -53,7 +53,7 @@ fun HomeScreen(
     books: Flow<Async<List<Book>>>,
     logout: suspend () -> Unit,
     isBookLiked: suspend (String) -> Boolean,
-    likeBook: suspend (String) -> Unit
+    likeBook: suspend (String,Boolean) -> Unit
 ) {
     val books by books.collectAsState(initial = Async.Loading)
     when (books) {
@@ -143,9 +143,7 @@ fun HomeScreen(
                                 image = it.image,
                                 isLiked = isBookLiked,
                                 onLikedClick = { id, isLike ->
-                                    if (isLike) {
-                                        likeBook(id)
-                                    }
+                                    likeBook(id,isLike)
                                 }
                             )
                         }

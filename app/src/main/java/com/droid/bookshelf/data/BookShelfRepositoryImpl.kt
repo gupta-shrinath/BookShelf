@@ -88,13 +88,18 @@ class BookShelfRepositoryImpl : BookShelfRepository {
 
     override suspend fun getUserId() = localDataSource.getUserId()
 
-    suspend fun getUserLike(bookId: String):Boolean {
+    override suspend fun getUserLike(bookId: String):Boolean {
         val userId = localDataSource.getUserId()
         return localDataSource.getLikeForBook(bookId, userId)
     }
 
-    suspend fun likeBook(bookId: String) {
+    override suspend fun likeBook(bookId: String) {
         val userId = localDataSource.getUserId()
         localDataSource.insertLikeForBook(bookId, userId)
+    }
+
+    override suspend fun unLikeBook(bookId: String) {
+        val userId = localDataSource.getUserId()
+        localDataSource.deleteLikeForBook(bookId, userId)
     }
 }

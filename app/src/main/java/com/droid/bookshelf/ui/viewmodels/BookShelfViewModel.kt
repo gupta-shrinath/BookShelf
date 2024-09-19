@@ -48,10 +48,11 @@ class BookShelfViewModel : ViewModel() {
         }
     }
 
-    suspend fun createUser(email: String, password: String, country: String)  = repository.createUser(email,password,country)
+    suspend fun createUser(email: String, password: String, country: String) =
+        repository.createUser(email, password, country)
 
-    suspend fun getUser(email: String, password: String):Boolean {
-        val user = repository.getUser(email,password) ?: return false
+    suspend fun getUser(email: String, password: String): Boolean {
+        val user = repository.getUser(email, password) ?: return false
         //save user id to check if loggedin
         setUserId(user.id.toString())
         return true
@@ -59,11 +60,19 @@ class BookShelfViewModel : ViewModel() {
 
     suspend fun getUserId() = repository.getUserId()
 
-    suspend fun setUserId(userId:String) = repository.saveUserId(userId)
+    suspend fun setUserId(userId: String) = repository.saveUserId(userId)
 
     suspend fun isBookLiked(bookId: String) = repository.getUserLike(bookId)
 
-    suspend fun likeBook(bookId: String) = repository.likeBook(bookId)
+    suspend fun likeBook(bookId: String, isLike: Boolean) {
+
+        if (isLike) {
+            repository.likeBook(bookId)
+        } else {
+            repository.unLikeBook(bookId)
+        }
+
+    }
 }
 
 sealed class Async<out T : Any> {
