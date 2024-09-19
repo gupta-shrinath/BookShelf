@@ -55,6 +55,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.forEach
+import kotlinx.coroutines.invoke
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -62,18 +63,32 @@ import kotlinx.coroutines.withContext
 fun SignUpScreen(
     countriesFlow: Flow<Async<List<String>>>,
     goToNextScreen: () -> Unit,
-    createUser: suspend (String, String, String) -> Unit,
+    createUser: suspend (String, String, String) -> Boolean,
     gotToLoginScreen: () -> Unit
 ) {
 
-    val flow  by remember {
+    val flow by remember {
         mutableStateOf(countriesFlow)
     }
     val countriesListState by flow.collectAsState(initial = Async.Loading)
     val coroutineScope = rememberCoroutineScope()
+    var showError by remember {
+        mutableStateOf(false)
+    }
     when (countriesListState) {
         is Async.Error -> {
-            Text(text = "Error fetching countries")
+            Box(modifier = Modifier.fillMaxSize()) {
+                Column(
+                    modifier = Modifier.align(Alignment.Center),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "Error fetching countries",
+                        style = MaterialTheme.typography.displaySmall
+                    )
+                }
+            }
+
         }
 
         is Async.Loading -> {
@@ -219,23 +234,32 @@ fun SignUpScreen(
                     }
                 }
 
+                if (showError) {
+                    Text(text = "Couldn't create new user", style = MaterialTheme.typography.titleSmall.copy(color = Color.Red))
+                }
                 Spacer(modifier = Modifier.height(24.dp))
 
                 // Sign Up Button
                 Button(
                     onClick = {
                         isSignupClicked = true
+                        showError = false
                         if (email.isValidEmail().not()) {
                             return@Button
                         } else if (password.isValidPassword().not()) {
                             return@Button
                         }
                         coroutineScope.launch(Dispatchers.IO) {
-                            createUser(email, password, selectedCountry)
-                            withContext(Dispatchers.Main) {
-                                goToNextScreen()
+                            if (createUser(email, password, selectedCountry)) {
+                                withContext(Dispatchers.Main) {
+                                    goToNextScreen()
 
+                                }
+                            } else {
+                                showError = true
+                                Log.e("TAG", "SignUpScreen: error")
                             }
+
                         }
 
                         // Validate
@@ -265,7 +289,7 @@ fun SignUpScreenPreview() {
     BookShelfTheme {
         SignUpScreen(flow {
             emit(Async.Success(listOf("India", "US")))
-        }, {}, { _, _, _ -> }) {}
+        }, {}, { _, _, _ -> true }) {}
 
     }
 }

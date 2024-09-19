@@ -49,7 +49,7 @@ class MainActivity : ComponentActivity() {
                     val startDestination by produceState<Any?>(
                         initialValue = null,
                         producer = {
-                            value = if(viewModel.getUserId().isBlank()) {
+                            value = if (viewModel.getUserId().isBlank()) {
                                 Screens.SignUp
                             } else {
                                 Screens.Home
@@ -57,7 +57,7 @@ class MainActivity : ComponentActivity() {
                         }
                     )
                     val navController = rememberNavController()
-                    if(startDestination != null) {
+                    if (startDestination != null) {
                         NavHost(
                             navController = navController,
                             startDestination = startDestination ?: Screens.SignUp
@@ -65,11 +65,11 @@ class MainActivity : ComponentActivity() {
                             composable<Screens.SignUp> {
 
                                 Box(modifier = Modifier.padding(innerPadding)) {
-                                    SignUpScreen(viewModel.getCountries(),{
+                                    SignUpScreen(viewModel.getCountries(), {
                                         navController.navigate(Screens.Login) {
                                             navController.popBackStack()
                                         }
-                                    },viewModel::createUser,{
+                                    }, viewModel::createUser, {
                                         navController.navigate(Screens.Login)
                                     })
                                 }
@@ -88,14 +88,17 @@ class MainActivity : ComponentActivity() {
                                     mutableStateOf(viewModel.getBooks())
                                 }
                                 Box(modifier = Modifier.padding(innerPadding)) {
-                                    HomeScreen(flow) {
-                                        viewModel.setUserId("")
-                                        withContext(Dispatchers.Main) {
-                                            navController.navigate(Screens.SignUp) {
-                                                navController.popBackStack()
+                                    HomeScreen(
+                                        flow, {
+                                            viewModel.setUserId("")
+                                            withContext(Dispatchers.Main) {
+                                                navController.navigate(Screens.SignUp) {
+                                                    navController.popBackStack()
+                                                }
                                             }
-                                        }
-                                    }
+                                        }, viewModel::isBookLiked,
+                                        viewModel::likeBook
+                                    )
                                 }
                             }
                         }

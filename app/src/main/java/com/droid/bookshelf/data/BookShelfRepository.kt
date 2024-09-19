@@ -8,15 +8,15 @@ interface BookShelfRepository {
 
     suspend fun getCountries(): List<String>?
 
-    suspend fun getCurrentCountry():String?
+    suspend fun getCurrentCountry(): String?
 
     suspend fun getBooks(): List<Book>?
 
-    suspend fun createUser(email: String, password: String, country: String)
+    suspend fun createUser(email: String, password: String, country: String): Boolean
 
     suspend fun getUser(email: String, password: String): User?
 
     suspend fun saveUserId(userId: String)
 
-    suspend fun getUserId():String
+    suspend fun getUserId(): String
 }

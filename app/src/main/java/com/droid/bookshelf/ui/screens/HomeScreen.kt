@@ -49,12 +49,27 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 @Composable
-fun HomeScreen(books: Flow<Async<List<Book>>>, logout: suspend () -> Unit) {
+fun HomeScreen(
+    books: Flow<Async<List<Book>>>,
+    logout: suspend () -> Unit,
+    isBookLiked: suspend (String) -> Boolean,
+    likeBook: suspend (String) -> Unit
+) {
     val books by books.collectAsState(initial = Async.Loading)
-    val coroutineScope = rememberCoroutineScope()
     when (books) {
         is Async.Error -> {
-            Text(text = "Error getting books")
+            Box(modifier = Modifier.fillMaxSize()) {
+                Column(
+                    modifier = Modifier.align(Alignment.Center),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "Error getting books",
+                        style = MaterialTheme.typography.displayMedium
+                    )
+                }
+            }
+
         }
 
         is Async.Loading -> {
@@ -110,7 +125,8 @@ fun HomeScreen(books: Flow<Async<List<Book>>>, logout: suspend () -> Unit) {
                     }
                     LaunchedEffect(firstVisibleItemIndex, firstVisibleItemScrollOffset) {
                         Log.d("TAG", "HomeScreen: Scrolled ${state.firstVisibleItemIndex}")
-                            books.get(state.firstVisibleItemIndex).publishedChapterDate?.getYearFromTimestamp()?.let {
+                        books.get(state.firstVisibleItemIndex).publishedChapterDate?.getYearFromTimestamp()
+                            ?.let {
                                 selectedYear = it
                             }
                         Log.d("TAG", "HomeScreen: Year to ${selectedYear}")
@@ -121,11 +137,17 @@ fun HomeScreen(books: Flow<Async<List<Book>>>, logout: suspend () -> Unit) {
                     ) {
                         items(books) {
                             BookTile(
+                                id = it.id,
                                 title = it.title,
                                 rating = it.score,
-                                image = it.image
-                            ) { _, _ ->
-                            }
+                                image = it.image,
+                                isLiked = isBookLiked,
+                                onLikedClick = { id, isLike ->
+                                    if (isLike) {
+                                        likeBook(id)
+                                    }
+                                }
+                            )
                         }
                     }
                 }

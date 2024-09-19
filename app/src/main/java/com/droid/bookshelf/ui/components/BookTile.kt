@@ -16,9 +16,11 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,17 +29,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import coil.compose.SubcomposeAsyncImage
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun BookTile(
+    id: String,
     title: String,
     rating: Double,
     image: String,
-    onLikedClick: (id: String, isLike: Boolean) -> Unit,
+    isLiked: suspend (id: String) -> Boolean,
+    onLikedClick: suspend (id: String, isLike: Boolean) -> Unit,
 ) {
-    var isLiked by remember { mutableStateOf(false) }
+    var isLike by remember { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
+    LaunchedEffect(Unit) {
+        isLike = isLiked(id)
+    }
 
     Card(
         modifier = Modifier
@@ -69,7 +78,7 @@ fun BookTile(
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = title,
+                    text = id,
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.bodyLarge,
                     maxLines = 1,
@@ -88,22 +97,29 @@ fun BookTile(
 
                 // Like Button
                 LikeButton(
-                    isLiked = isLiked,
-                    onClick = { isLiked = !isLiked; onLikedClick(title, isLiked) }
+                    isLiked = isLike,
+                    onClick = {
+                        isLike = !isLike;
+                        coroutineScope.launch {
+                            onLikedClick(id, isLike)
+                        }
+                    }
                 )
             }
         }
     }
 }
 
-@Composable
-@Preview
-fun BookTitlePreview() {
-    BookTile(
-        title = "test",
-        rating = 123.1,
-        image = "https://cdn.myanimelist.net/images/anime/1600/134703.jpg"
-    ) { _, _ ->
-
-    }
-}
+//@Composable
+//@Preview
+//fun BookTitlePreview() {
+//    BookTile(
+//        id = "123",
+//        title = "test",
+//        rating = 123.1,
+//        image = "https://cdn.myanimelist.net/images/anime/1600/134703.jpg",
+//       true
+//    ) { _, _ ->
+//
+//    }
+//}

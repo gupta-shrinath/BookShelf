@@ -59,19 +59,26 @@ class BookShelfRepositoryImpl : BookShelfRepository {
 //        } catch (e: Exception) {
 //            return null
 //        }
-        return networkDataSource.getBooks()
+        val localBooks = localDataSource.getAllBooks()
+        if (localBooks == null) {
+            val books = networkDataSource.getBooks() ?: return null
+            localDataSource.insertBooks(books)
+            return books
+        } else {
+            return localDataSource.getAllBooks()
+        }
     }
 
-    override suspend fun createUser(email: String, password: String, country: String) {
+    override suspend fun createUser(email: String, password: String, country: String):Boolean {
         val user = User(0, email, password.toSHA256Hash(), country)
-         localDataSource.createUser(user)
+        return localDataSource.createUser(user)
     }
 
     override suspend fun getUser(email: String, password: String): User? {
         return try {
-              localDataSource.getUser(email,password.toSHA256Hash())
-        } catch (e:Exception) {
-             null
+            localDataSource.getUser(email, password.toSHA256Hash())
+        } catch (e: Exception) {
+            null
         }
     }
 
@@ -81,4 +88,13 @@ class BookShelfRepositoryImpl : BookShelfRepository {
 
     override suspend fun getUserId() = localDataSource.getUserId()
 
+    suspend fun getUserLike(bookId: String):Boolean {
+        val userId = localDataSource.getUserId()
+        return localDataSource.getLikeForBook(bookId, userId)
+    }
+
+    suspend fun likeBook(bookId: String) {
+        val userId = localDataSource.getUserId()
+        localDataSource.insertLikeForBook(bookId, userId)
+    }
 }
