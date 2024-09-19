@@ -78,7 +78,7 @@ fun BookTile(
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = id,
+                    text = title,
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.bodyLarge,
                     maxLines = 1,
