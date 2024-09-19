@@ -7,6 +7,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.net.ssl.SSLSession
 
 
 object RetrofitClient {
@@ -17,6 +18,8 @@ object RetrofitClient {
         .connectTimeout(TIMEOUT, TimeUnit.SECONDS)
         .readTimeout(TIMEOUT, TimeUnit.SECONDS)
         .writeTimeout(TIMEOUT, TimeUnit.SECONDS)
+        // Add due to jsonkeeper.com endpoint
+        .hostnameVerifier { _, _ -> true }
         .build()
 
     private val moshi: Moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()

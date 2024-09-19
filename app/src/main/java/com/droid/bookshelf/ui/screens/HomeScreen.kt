@@ -1,6 +1,7 @@
 package com.droid.bookshelf.ui.screens
 
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -12,8 +13,17 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,6 +37,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontVariation.width
 import androidx.compose.ui.unit.dp
 import com.droid.bookshelf.data.models.Book
@@ -38,8 +49,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 @Composable
-fun HomeScreen(books: Flow<Async<List<Book>>>) {
+fun HomeScreen(books: Flow<Async<List<Book>>>, logout: suspend () -> Unit) {
     val books by books.collectAsState(initial = Async.Loading)
+    val coroutineScope = rememberCoroutineScope()
     when (books) {
         is Async.Error -> {
             Text(text = "Error getting books")
@@ -69,39 +81,56 @@ fun HomeScreen(books: Flow<Async<List<Book>>>) {
         is Async.Success -> {
             val books = (books as Async.Success).data
             val years by remember {
-                mutableStateOf(books.map { it.publishedChapterDate.getYearFromTimestamp() }
+                mutableStateOf(books.map { it.publishedChapterDate?.getYearFromTimestamp() }
                     .distinct())
             }
             var selectedYear by remember {
-                mutableIntStateOf(years.first())
+                mutableIntStateOf(years.first() ?: 0)
             }
             val state = rememberLazyListState()
             val scope = rememberCoroutineScope()
-            val firstVisibleItemIndex  by remember { derivedStateOf { state.firstVisibleItemIndex } }
+            val firstVisibleItemIndex by remember { derivedStateOf { state.firstVisibleItemIndex } }
             val firstVisibleItemScrollOffset by remember { derivedStateOf { state.firstVisibleItemScrollOffset } }
-            Column {
-                YearTabs(years = years, selectedYear = selectedYear) {
-                    selectedYear = it
-                    scope.launch {
-                        state.scrollToItem(books.indexOfFirst { it.publishedChapterDate.getYearFromTimestamp() == selectedYear })
+            Scaffold(floatingActionButton = {
+                IconButton(
+                    modifier = Modifier.background(
+                        color = MaterialTheme.colorScheme.secondaryContainer,
+                        shape = CircleShape
+                    ), onClick = { scope.launch { logout() } }) {
+                    Icon(Icons.AutoMirrored.Filled.ExitToApp, contentDescription = null)
+                }
+            }) { _ ->
+                Column {
+                    YearTabs(years = years.filterNotNull().toList(), selectedYear = selectedYear) {
+                        selectedYear = it
+                        scope.launch {
+                            state.scrollToItem(books.indexOfFirst { it.publishedChapterDate?.getYearFromTimestamp() == selectedYear })
+
+                        }
+                    }
+                    LaunchedEffect(firstVisibleItemIndex, firstVisibleItemScrollOffset) {
+                        Log.d("TAG", "HomeScreen: Scrolled ${state.firstVisibleItemIndex}")
+                            books.get(state.firstVisibleItemIndex).publishedChapterDate?.getYearFromTimestamp()?.let {
+                                selectedYear = it
+                            }
+                        Log.d("TAG", "HomeScreen: Year to ${selectedYear}")
 
                     }
-                }
-                LaunchedEffect(firstVisibleItemIndex,firstVisibleItemScrollOffset) {
-                    Log.d("TAG", "HomeScreen: Scrolled ${state.firstVisibleItemIndex}")
-                    selectedYear = books.get(state.firstVisibleItemIndex).publishedChapterDate.getYearFromTimestamp()
-                    Log.d("TAG", "HomeScreen: Year to ${selectedYear}")
-
-                }
-                LazyColumn(
-                    state = state
-                ) {
-                    items(books) {
-                        BookTile(title = it.title, rating = it.score, image = it.image) { _, _ ->
+                    LazyColumn(
+                        state = state
+                    ) {
+                        items(books) {
+                            BookTile(
+                                title = it.title,
+                                rating = it.score,
+                                image = it.image
+                            ) { _, _ ->
+                            }
                         }
                     }
                 }
             }
+
 
         }
     }

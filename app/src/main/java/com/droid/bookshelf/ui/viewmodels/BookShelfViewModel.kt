@@ -1,7 +1,6 @@
 package com.droid.bookshelf.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
-import com.droid.bookshelf.BookShelfApplication.Companion.application
 import com.droid.bookshelf.data.BookShelfRepositoryImpl
 import com.droid.bookshelf.data.models.Book
 import com.droid.bookshelf.utils.getYearFromTimestamp
@@ -16,7 +15,7 @@ class BookShelfViewModel : ViewModel() {
         try {
             emit(Async.Loading)
             val currentCountry = repository.getCurrentCountry()
-            val countries = repository.getCountries(application)
+            val countries = repository.getCountries()
             if (!currentCountry.isNullOrBlank() && countries != null) {
                 val sortedCountries = countries.toMutableList()
                 sortedCountries.sort()
@@ -36,8 +35,8 @@ class BookShelfViewModel : ViewModel() {
     fun getBooks(): Flow<Async<List<Book>>> = flow {
         try {
             emit(Async.Loading)
-            val books = repository.getBooks(application)
-                ?.sortedBy { it.publishedChapterDate.getYearFromTimestamp() }?.reversed()
+            val books = repository.getBooks()?.filter { it.publishedChapterDate !== null }
+                ?.sortedBy { it.publishedChapterDate?.getYearFromTimestamp() }?.reversed()
             if (books == null) {
                 emit(Async.Error("No valid books found"))
             } else {
@@ -48,6 +47,21 @@ class BookShelfViewModel : ViewModel() {
             emit(Async.Error("An unexpected error occurred: ${e.message}"))
         }
     }
+
+    suspend fun createUser(email: String, password: String, country: String) {
+        repository.createUser(email,password,country)
+    }
+
+    suspend fun getUser(email: String, password: String):Boolean {
+        val user = repository.getUser(email,password) ?: return false
+        //save user id to check if loggedin
+        setUserId(user.id.toString())
+        return true
+    }
+
+    suspend fun getUserId() = repository.getUserId()
+
+    suspend fun setUserId(userId:String) = repository.saveUserId(userId)
 
 }
 

@@ -32,6 +32,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,18 +48,29 @@ import com.droid.bookshelf.ui.theme.BookShelfTheme
 import com.droid.bookshelf.ui.viewmodels.Async
 import com.droid.bookshelf.utils.isValidEmail
 import com.droid.bookshelf.utils.isValidPassword
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.forEach
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Composable
-fun SignUpScreen(countriesFlow: Flow<Async<List<String>>>, goToNextScreen: () -> Unit) {
+fun SignUpScreen(
+    countriesFlow: Flow<Async<List<String>>>,
+    goToNextScreen: () -> Unit,
+    createUser: suspend (String, String, String) -> Unit,
+    gotToLoginScreen: () -> Unit
+) {
 
-    val countriesListState by countriesFlow.collectAsState(initial = Async.Loading)
-
+    val flow  by remember {
+        mutableStateOf(countriesFlow)
+    }
+    val countriesListState by flow.collectAsState(initial = Async.Loading)
+    val coroutineScope = rememberCoroutineScope()
     when (countriesListState) {
         is Async.Error -> {
             Text(text = "Error fetching countries")
@@ -218,12 +230,28 @@ fun SignUpScreen(countriesFlow: Flow<Async<List<String>>>, goToNextScreen: () ->
                         } else if (password.isValidPassword().not()) {
                             return@Button
                         }
-                        goToNextScreen()
+                        coroutineScope.launch(Dispatchers.IO) {
+                            createUser(email, password, selectedCountry)
+                            withContext(Dispatchers.Main) {
+                                goToNextScreen()
+
+                            }
+                        }
+
                         // Validate
                     },
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(text = "Sign Up")
+                }
+
+                Button(
+                    onClick = {
+                        gotToLoginScreen()
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(text = "Login")
                 }
             }
         }
@@ -237,7 +265,7 @@ fun SignUpScreenPreview() {
     BookShelfTheme {
         SignUpScreen(flow {
             emit(Async.Success(listOf("India", "US")))
-        })
-        {}
+        }, {}, { _, _, _ -> }) {}
+
     }
 }

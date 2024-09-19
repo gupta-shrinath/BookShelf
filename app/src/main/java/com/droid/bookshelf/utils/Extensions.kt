@@ -1,5 +1,6 @@
 package com.droid.bookshelf.utils
 
+import java.security.MessageDigest
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -24,4 +25,12 @@ fun Long.getYearFromTimestamp(): Int {
     // Convert the timestamp from seconds to milliseconds and set it in the calendar
     calendar.timeInMillis = this * 1000L
     return calendar.get(Calendar.YEAR)
+}
+
+@OptIn(ExperimentalStdlibApi::class)
+fun String.toSHA256Hash(): String {
+    val bytes = this.toByteArray()
+    val md = MessageDigest.getInstance("SHA-256")
+    val digest = md.digest(bytes)
+    return digest.toHexString()
 }
