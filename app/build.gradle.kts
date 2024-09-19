@@ -1,3 +1,5 @@
+import com.android.tools.r8.internal.db
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -75,9 +77,9 @@ dependencies {
     implementation(libs.coil)
     implementation(libs.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
-    implementation ("androidx.room:room-ktx:2.6.1")
-    kapt("androidx.room:room-compiler:2.6.1")
-    implementation("androidx.datastore:datastore-preferences:1.1.1")
+    implementation (libs.room.db)
+    kapt(libs.room.db.compiler)
+    implementation(libs.datastore)
 
 
 }

@@ -15,6 +15,8 @@ retrofit-moshi = "2.11.0"
 coil = "2.6.0"
 composeNavigation = "2.8.1"
 serialization = "1.6.3"
+room-db = "2.6.1"
+datastore = "1.1.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -37,7 +39,10 @@ http-logger = { group = "com.squareup.okhttp3", name = "logging-interceptor", ve
 retrofit-moshi = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofit-moshi" }
 coil = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "composeNavigation" }
-kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization"}
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
+room-db = { group = "androidx.room", name = "room-ktx", version.ref = "room-db" }
+room-db-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room-db" }
+datastore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
